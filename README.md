@@ -1,11 +1,10 @@
 # ImageKit Java SDK
 
-[![Java CI](https://github.com/imagekit-developer/imagekit-java/workflows/Java%20CI/badge.svg)](https://github.com/imagekit-developer/imagekit-java)
-[![Release](https://jitpack.io/v/com.github.imagekit-developer/imagekit-java.svg)](https://jitpack.io/#com.github.imagekit-developer/imagekit-java)
+[![Java CI](https://github.com/therunninghub/imagekit-java/workflows/Java%20CI/badge.svg)](https://github.com/therunninghub/imagekit-java)
+[![Release](https://jitpack.io/v/com.github.therunninghub/imagekit-java.svg)](https://jitpack.io/#com.github.therunninghub/imagekit-java)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Twitter Follow](https://img.shields.io/twitter/follow/imagekitio?label=Follow&style=social)](https://twitter.com/ImagekitIo)
 
-Java SDK for [ImageKit.io](https://imagekit.io/) that implements the new APIs and interface for performing different file
+Unofficial and improved Java SDK for [ImageKit.io](https://imagekit.io/) that implements the new APIs and interface for performing different file
 operations.
 
 ImageKit is a complete image optimization and transformation solution that comes with and
@@ -43,7 +42,7 @@ allprojects {
 Step 2. Add the dependency on project's `build.gradle`:
 ```
 dependencies {
-        implementation 'com.github.imagekit-developer:imagekit-java:1.0.3'
+        implementation 'com.github.therunninghub:imagekit-java:1.0.3'
 }
 ```
 ### Maven users
@@ -59,7 +58,7 @@ Step 1. Add the JitPack repository to your build file
 Step 2. Add the dependency in POM file:
 ```
 <dependency>
-    <groupId>com.github.imagekit-developer</groupId>
+    <groupId>com.github.therunninghub</groupId>
     <artifactId>imagekit-java</artifactId>
     <version>1.0.3</version>
 </dependency>
@@ -551,7 +550,7 @@ ImageKit.getInstance().pHashDistance("a4a65595ac94518b", "7838873e791f8400");
 
 **1. First clone this repository to your system using git.**
 ```shell script
-git clone https://github.com/imagekit-developer/imagekit-java.git
+git clone https://github.com/therunninghub/imagekit-java.git
 ```
 **2. Open project in your favorite Java IDE that can supports Gradle dependency management or you can use Terminal/Command Prompt.**
 
