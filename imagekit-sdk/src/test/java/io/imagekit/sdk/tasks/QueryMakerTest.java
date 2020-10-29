@@ -3,15 +3,16 @@ package io.imagekit.sdk.tasks;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class QueryMakerTest {
 
     QueryMaker SUT;
 
     @Before
-    public void setUp() throws Exception {
-        SUT=new QueryMaker();
+    public void setUp() {
+        SUT = new QueryMaker();
     }
 
     @Test
@@ -19,7 +20,7 @@ public class QueryMakerTest {
         SUT.put("public=allow");
         SUT.put("user=guest");
         String param = SUT.get();
-        assertEquals("public=allow&user=guest",param);
+        assertEquals("public=allow&user=guest", param);
     }
 
     @Test

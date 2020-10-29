@@ -48,8 +48,8 @@ public class ResultCacheStatus {
         this.raw = raw;
     }
 
-    public Map<String,Object> getMap(){
-        if (null!=raw) {
+    public Map<String, Object> getMap() {
+        if (null != raw) {
             return new Gson().fromJson(raw, new TypeToken<Map<String, Object>>() {
             }.getType());
         }

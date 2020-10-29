@@ -1,6 +1,5 @@
 package io.imagekit.sdk.tasks;
 
-import com.google.gson.Gson;
 import io.imagekit.sdk.models.FileCreateRequest;
 import io.imagekit.sdk.models.FileUpdateRequest;
 import okhttp3.*;
@@ -11,11 +10,13 @@ import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
 import static org.junit.Assert.assertEquals;
 
 
@@ -27,28 +28,28 @@ public class MultipartBuilderTest {
 
     @Before
     public void setUp() throws Exception {
-        SUT=new MultipartBuilder();
+        SUT = new MultipartBuilder();
 
-        String credential = Credentials.basic("private_key_test","");
-        headers=new HashMap<>();
-        headers.put("Accept-Encoding","application/json");
-        headers.put("Content-Type","application/json");
-        headers.put("Authorization",credential);
+        String credential = Credentials.basic("private_key_test", "");
+        headers = new HashMap<>();
+        headers.put("Accept-Encoding", "application/json");
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", credential);
 
         server = new MockWebServer();
-        MockResponse response=new MockResponse()
+        MockResponse response = new MockResponse()
                 .setResponseCode(200)
                 .setBody("{isSuccessful=true, message='Your request contains invalid file.', help='For support kindly contact us at support@imagekit.io .', fileId='null', name='null', url='null', thumbnail='null', height=0, width=0, size=0, filePath='null', tags='null', isPrivateFile=false, customCoordinates='null', fileType='null'}");
 
         server.setDispatcher(new Dispatcher() {
             @Override
-            public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
+            public MockResponse dispatch(RecordedRequest request) {
                 return response;
             }
         });
         server.start();
 
-        okHttpClient= new OkHttpClient.Builder()
+        okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(2, TimeUnit.SECONDS)
                 .readTimeout(2, TimeUnit.SECONDS)
                 .writeTimeout(2, TimeUnit.SECONDS)
@@ -62,70 +63,70 @@ public class MultipartBuilderTest {
     }
 
     @Test
-    public void build_test_with_FileCreateRequest() throws Exception{
+    public void build_test_with_FileCreateRequest() throws Exception {
 
-        FileCreateRequest fileCreateRequest=new FileCreateRequest("f06830ca9f1e3e90","demo.jpg");
+        FileCreateRequest fileCreateRequest = new FileCreateRequest("f06830ca9f1e3e90", "demo.jpg");
         fileCreateRequest.setPrivateFile(true);
 
         MultipartBody body = SUT.build(fileCreateRequest);
 
         HttpUrl baseUrl = server.url("/api/v1/files/upload");
-        Request request=new Request.Builder()
+        Request request = new Request.Builder()
                 .url(baseUrl)
                 .post(body)
                 .headers(Headers.of(headers))
                 .build();
 
-        Response response = okHttpClient.newCall(request).execute();
+        okHttpClient.newCall(request).execute();
 
-        String boundary=body.boundary();
+        String boundary = body.boundary();
 
-        String expectedMultipartData="--"+boundary+"\r\n" +
+        String expectedMultipartData = "--" + boundary + "\r\n" +
                 "Content-Disposition: form-data; name=\"file\"\r\n" +
                 "Content-Length: 16\r\n\r\n" +
                 "f06830ca9f1e3e90\r\n" +
-                "--"+boundary+"\r\n" +
+                "--" + boundary + "\r\n" +
                 "Content-Disposition: form-data; name=\"fileName\"\r\n" +
                 "Content-Length: 8\r\n\r\n" +
                 "demo.jpg\r\n" +
-                "--"+boundary+"\r\n" +
+                "--" + boundary + "\r\n" +
                 "Content-Disposition: form-data; name=\"useUniqueFileName\"\r\n" +
                 "Content-Length: 4\r\n\r\n" +
                 "true\r\n" +
-                "--"+boundary+"\r\n" +
+                "--" + boundary + "\r\n" +
                 "Content-Disposition: form-data; name=\"isPrivateFile\"\r\n" +
                 "Content-Length: 4\r\n\r\n" +
                 "true\r\n" +
-                "--"+boundary+"--\r\n";
+                "--" + boundary + "--\r\n";
 
         // It's capture multipart request
-        RecordedRequest recordedRequest=server.takeRequest();
+        RecordedRequest recordedRequest = server.takeRequest();
 
-        String data=recordedRequest.getBody().readUtf8();
+        String data = recordedRequest.getBody().readUtf8();
 
         assertEquals(expectedMultipartData, data);
     }
 
     @Test
-    public void build_test_with_FileCreateRequest_more_params() throws Exception{
+    public void build_test_with_FileCreateRequest_more_params() throws Exception {
 
-        FileCreateRequest fileCreateRequest=new FileCreateRequest("f06830ca9f1e3e90","demo.jpg");
+        FileCreateRequest fileCreateRequest = new FileCreateRequest("f06830ca9f1e3e90", "demo.jpg");
         fileCreateRequest.setPrivateFile(true);
         fileCreateRequest.setFolder("/sample-folder");
-        List<String> tags=new ArrayList<>();
+        List<String> tags = new ArrayList<>();
         tags.add("Software");
         tags.add("Developer");
         tags.add("Engineer");
         fileCreateRequest.setTags(tags);
         fileCreateRequest.setCustomCoordinates("10,10,100,100");
-        List<String> responseFields=new ArrayList<>();
+        List<String> responseFields = new ArrayList<>();
         responseFields.add("metadata");
         fileCreateRequest.setResponseFields(responseFields);
 
         MultipartBody body = SUT.build(fileCreateRequest);
 
         HttpUrl baseUrl = server.url("/api/v1/files/upload");
-        Request request=new Request.Builder()
+        Request request = new Request.Builder()
                 .url(baseUrl)
                 .post(body)
                 .headers(Headers.of(headers))
@@ -133,65 +134,65 @@ public class MultipartBuilderTest {
 
         Response response = okHttpClient.newCall(request).execute();
 
-        String boundary=body.boundary();
+        String boundary = body.boundary();
 
-        String expectedMultipartData="--"+boundary+"\r\n" +
+        String expectedMultipartData = "--" + boundary + "\r\n" +
                 "Content-Disposition: form-data; name=\"file\"\r\n" +
                 "Content-Length: 16\r\n\r\n" +
                 "f06830ca9f1e3e90\r\n" +
-                "--"+boundary+"\r\n" +
+                "--" + boundary + "\r\n" +
                 "Content-Disposition: form-data; name=\"fileName\"\r\n" +
                 "Content-Length: 8\r\n\r\n" +
                 "demo.jpg\r\n" +
-                "--"+boundary+"\r\n" +
+                "--" + boundary + "\r\n" +
                 "Content-Disposition: form-data; name=\"useUniqueFileName\"\r\n" +
                 "Content-Length: 4\r\n\r\n" +
                 "true\r\n" +
-                "--"+boundary+"\r\n" +
+                "--" + boundary + "\r\n" +
                 "Content-Disposition: form-data; name=\"tags\"\r\n" +
                 "Content-Length: 27\r\n\r\n" +
                 "Software,Developer,Engineer\r\n" +
-                "--"+boundary+"\r\n" +
+                "--" + boundary + "\r\n" +
                 "Content-Disposition: form-data; name=\"folder\"\r\n" +
                 "Content-Length: 14\r\n\r\n" +
                 "/sample-folder\r\n" +
-                "--"+boundary+"\r\n" +
+                "--" + boundary + "\r\n" +
                 "Content-Disposition: form-data; name=\"isPrivateFile\"\r\n" +
                 "Content-Length: 4\r\n\r\n" +
                 "true\r\n" +
-                "--"+boundary+"\r\n" +
+                "--" + boundary + "\r\n" +
                 "Content-Disposition: form-data; name=\"customCoordinates\"\r\n" +
                 "Content-Length: 13\r\n\r\n" +
                 "10,10,100,100\r\n" +
-                "--"+boundary+"\r\n" +
+                "--" + boundary + "\r\n" +
                 "Content-Disposition: form-data; name=\"responseFields\"\r\n" +
                 "Content-Length: 8\r\n\r\n" +
                 "metadata\r\n" +
-                "--"+boundary+"--\r\n";
+                "--" + boundary + "--\r\n";
 
 
         // It's capture multipart request
-        RecordedRequest recordedRequest=server.takeRequest();
+        RecordedRequest recordedRequest = server.takeRequest();
 
-        String data=recordedRequest.getBody().readUtf8();
+        String data = recordedRequest.getBody().readUtf8();
 
         assertEquals(expectedMultipartData, data);
     }
 
     @Test
-    public void build_test_with_FileUpdateRequest() throws Exception{
+    public void build_test_with_FileUpdateRequest() throws Exception {
 
-        FileUpdateRequest fileUpdateRequest=new FileUpdateRequest("598821f949c0a938d57563bd");
-        List<String> tags=new ArrayList<>();
+        FileUpdateRequest fileUpdateRequest = new FileUpdateRequest("598821f949c0a938d57563bd");
+        List<String> tags = new ArrayList<>();
         tags.add("t-shirt");
         tags.add("round-neck");
         tags.add("sale2020");
         fileUpdateRequest.setTags(tags);
 
-        RequestBody body=SUT.build(fileUpdateRequest);
+        RequestBody body = SUT.build(fileUpdateRequest);
 
-        HttpUrl baseUrl = server.url(String.format("/v1/files/%s/details",fileUpdateRequest.getFileId()));
-        Request request=new Request.Builder()
+        HttpUrl baseUrl = server.url(String.format("/v1/files/%s/details", fileUpdateRequest.getFileId()));
+        Request request = new Request.Builder()
                 .url(baseUrl)
                 .post(body)
                 .headers(Headers.of(headers))
@@ -200,25 +201,25 @@ public class MultipartBuilderTest {
         Response response = okHttpClient.newCall(request).execute();
 
 
-        String expectedRequestObject="{\"fileId\":\"598821f949c0a938d57563bd\",\"tags\":[\"t-shirt\",\"round-neck\",\"sale2020\"]}";
+        String expectedRequestObject = "{\"fileId\":\"598821f949c0a938d57563bd\",\"tags\":[\"t-shirt\",\"round-neck\",\"sale2020\"]}";
 
         // It's capture multipart request
-        RecordedRequest recordedRequest=server.takeRequest();
+        RecordedRequest recordedRequest = server.takeRequest();
 
-        String data=recordedRequest.getBody().readUtf8();
+        String data = recordedRequest.getBody().readUtf8();
 
         assertEquals(expectedRequestObject, data);
     }
 
     @Test
-    public void build_test_with_From_Json_String() throws Exception{
+    public void build_test_with_From_Json_String() throws Exception {
 
-        String json="{\"fileIds\":[\"598821f949c0a938d57534bd\",\"338821f949c0a938d57563bz\",\"987821f949c0a938d57563rt\"]}";
+        String json = "{\"fileIds\":[\"598821f949c0a938d57534bd\",\"338821f949c0a938d57563bz\",\"987821f949c0a938d57563rt\"]}";
 
-        RequestBody body=SUT.build(json);
+        RequestBody body = SUT.build(json);
 
         HttpUrl baseUrl = server.url("/v1/files/batch/deleteByFileIds");
-        Request request=new Request.Builder()
+        Request request = new Request.Builder()
                 .url(baseUrl)
                 .post(body)
                 .headers(Headers.of(headers))
@@ -227,12 +228,12 @@ public class MultipartBuilderTest {
         Response response = okHttpClient.newCall(request).execute();
 
 
-        String expectedRequestObject="{\"fileIds\":[\"598821f949c0a938d57534bd\",\"338821f949c0a938d57563bz\",\"987821f949c0a938d57563rt\"]}";
+        String expectedRequestObject = "{\"fileIds\":[\"598821f949c0a938d57534bd\",\"338821f949c0a938d57563bz\",\"987821f949c0a938d57563rt\"]}";
 
         // It's capture multipart request
-        RecordedRequest recordedRequest=server.takeRequest();
+        RecordedRequest recordedRequest = server.takeRequest();
 
-        String data=recordedRequest.getBody().readUtf8();
+        String data = recordedRequest.getBody().readUtf8();
 
         assertEquals(expectedRequestObject, data);
     }

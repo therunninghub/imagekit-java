@@ -51,14 +51,14 @@ public class Configuration {
                 '}';
     }
 
-    public boolean validate(){
-        if (urlEndpoint==null){
+    public boolean validate() {
+        if (urlEndpoint == null) {
             throw new RuntimeException("UrlEndpoint not found in config.properties");
         }
-        if (privateKey==null){
+        if (privateKey == null) {
             throw new RuntimeException("PrivateKey not found in config.properties");
         }
-        if (publicKey==null){
+        if (publicKey == null) {
             throw new RuntimeException("PublicKey not found in config.properties");
         }
         return true;

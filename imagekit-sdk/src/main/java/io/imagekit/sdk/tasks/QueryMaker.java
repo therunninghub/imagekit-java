@@ -3,17 +3,16 @@ package io.imagekit.sdk.tasks;
 public class QueryMaker {
     private String query;
 
-    public void put(String q){
-        if (null!=query){
-            query+="&";
+    public void put(String q) {
+        if (null != query) {
+            query += "&";
+        } else {
+            query = "";
         }
-        else {
-            query="";
-        }
-        query+=q;
+        query += q;
     }
 
-    public String  get(){
+    public String get() {
         return query;
     }
 

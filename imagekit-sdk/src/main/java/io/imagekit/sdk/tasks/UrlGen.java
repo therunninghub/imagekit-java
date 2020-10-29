@@ -4,6 +4,7 @@ import io.imagekit.sdk.ImageKit;
 import io.imagekit.sdk.config.Configuration;
 import io.imagekit.sdk.constants.Transformer;
 import io.imagekit.sdk.constants.Version;
+import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.HmacUtils;
 
 import java.net.URI;
@@ -12,53 +13,51 @@ import java.util.*;
 
 public class UrlGen {
 
-    private static final long DEFAULT_TIMESTAMP=9999999999L;
+    private static final long DEFAULT_TIMESTAMP = 9999999999L;
 
-    public static String getUrl(Map<String,Object> options){
-        String path= (String) options.get("path");
-        String urlEndpoint= (String) options.get("urlEndpoint");
-        String src= (String) options.get("src");
-        Map<String,String> queryParams= (Map<String, String>) options.get("queryParameters");
-        List<Map<String,String>> transformation= (List<Map<String, String>>) options.get("transformation");
-        String transformationPosition= (String) options.get("transformationPosition");
-        boolean signed=false;
-        if (null!=options.get("signed")) {
+    public static String getUrl(Map<String, Object> options) {
+        String path = (String) options.get("path");
+        String urlEndpoint = (String) options.get("urlEndpoint");
+        String src = (String) options.get("src");
+        Map<String, String> queryParams = (Map<String, String>) options.get("queryParameters");
+        List<Map<String, String>> transformation = (List<Map<String, String>>) options.get("transformation");
+        String transformationPosition = (String) options.get("transformationPosition");
+        boolean signed = false;
+        if (null != options.get("signed")) {
             signed = (boolean) options.get("signed");
         }
-        long expire=0;
-        if (null!=options.get("expireSeconds")) {
-            expire = (long) (int)options.get("expireSeconds");
+        long expire = 0;
+        if (null != options.get("expireSeconds")) {
+            expire = (long) (int) options.get("expireSeconds");
         }
-        return UrlGen.generateUrl(path,urlEndpoint,src,queryParams,transformation,transformationPosition,signed,expire);
+        return UrlGen.generateUrl(path, urlEndpoint, src, queryParams, transformation, transformationPosition, signed, expire);
     }
 
     private static String generateUrl(
             String path,
             String urlEndpoint,
             String src,
-            Map<String,String> queryParameters,
+            Map<String, String> queryParameters,
             List<Map<String, String>> transformation,
             String transformationPosition,
             boolean signed,
             long expireSeconds
-    ){
-        Configuration config=ImageKit.getInstance().getConfig();
-        if (urlEndpoint==null){
-            urlEndpoint= config.getUrlEndpoint();
+    ) {
+        Configuration config = ImageKit.getInstance().getConfig();
+        if (urlEndpoint == null) {
+            urlEndpoint = config.getUrlEndpoint();
         }
-        if (urlEndpoint.charAt(urlEndpoint.length()-1)!='/'){
-            urlEndpoint+="/";
+        if (urlEndpoint.charAt(urlEndpoint.length() - 1) != '/') {
+            urlEndpoint += "/";
         }
-        String newUrl=null;
-        if (null!=src){
-            newUrl=buildFullUrl(src,queryParameters,transformation,transformationPosition,signed,expireSeconds, config.getPrivateKey(), urlEndpoint);
-        }
-        else {
-            if ("query".equalsIgnoreCase(transformationPosition)){
-                newUrl=buildFullUrl(urlEndpoint+(path.charAt(0)=='/'?path.substring(1,path.length()):path),queryParameters,transformation,transformationPosition,signed,expireSeconds, config.getPrivateKey(), urlEndpoint);
-            }
-            else {
-                newUrl = buildPathUrl(path.charAt(0)=='/'?path:"/"+path, urlEndpoint, queryParameters, transformation, transformationPosition, signed, expireSeconds, config.getPrivateKey());
+        String newUrl = null;
+        if (null != src) {
+            newUrl = buildFullUrl(src, queryParameters, transformation, transformationPosition, signed, expireSeconds, config.getPrivateKey(), urlEndpoint);
+        } else {
+            if ("query".equalsIgnoreCase(transformationPosition)) {
+                newUrl = buildFullUrl(urlEndpoint + (path.charAt(0) == '/' ? path.substring(1) : path), queryParameters, transformation, transformationPosition, signed, expireSeconds, config.getPrivateKey(), urlEndpoint);
+            } else {
+                newUrl = buildPathUrl(path.charAt(0) == '/' ? path : "/" + path, urlEndpoint, queryParameters, transformation, transformationPosition, signed, expireSeconds, config.getPrivateKey());
             }
         }
         return newUrl;
@@ -66,8 +65,8 @@ public class UrlGen {
 
     private static String buildPathUrl(String path, String urlEndpoint, Map<String, String> queryParameters, List<Map<String, String>> transformation, String transformationPosition, boolean signed, long expireSeconds, String privateKey) {
 
-        StringBuilder tr= new StringBuilder("");
-        if (transformation.size()>0) {
+        StringBuilder tr = new StringBuilder();
+        if (transformation.size() > 0) {
             tr.append("tr");
             for (Map<String, String> map : transformation) {
                 Set<Map.Entry<String, String>> entries = map.entrySet();
@@ -86,36 +85,35 @@ public class UrlGen {
             }
         }
 
-        QueryMaker queryMaker=new QueryMaker();
-        queryMaker.put(String.format(Locale.US,"%s=%s","ik-sdk-version", Version.VERSION_CODE));
-        if (null!=queryParameters){
-            for (Map.Entry<String,String> entry:queryParameters.entrySet()){
-                queryMaker.put(String.format(Locale.US,"%s=%s",entry.getKey(),entry.getValue()));
+        QueryMaker queryMaker = new QueryMaker();
+        queryMaker.put(String.format(Locale.US, "%s=%s", "ik-sdk-version", Version.VERSION_CODE));
+        if (null != queryParameters) {
+            for (Map.Entry<String, String> entry : queryParameters.entrySet()) {
+                queryMaker.put(String.format(Locale.US, "%s=%s", entry.getKey(), entry.getValue()));
             }
         }
 
-        URI baseUrl=URI.create(urlEndpoint);
-        URI newUri= null;
+        URI baseUrl = URI.create(urlEndpoint);
+        URI newUri = null;
         try {
-            String newPath=baseUrl.getPath();
-            if (tr.toString().equalsIgnoreCase("")){
-                newPath+=path.substring(1,path.length());
-            }
-            else {
-                newPath+=tr+path;
+            String newPath = baseUrl.getPath();
+            if (tr.toString().equalsIgnoreCase("")) {
+                newPath += path.substring(1);
+            } else {
+                newPath += tr + path;
             }
 
-            URI tmpUri = new URI(baseUrl.getScheme(),baseUrl.getUserInfo(),baseUrl.getHost(),baseUrl.getPort(),
+            URI tmpUri = new URI(baseUrl.getScheme(), baseUrl.getUserInfo(), baseUrl.getHost(), baseUrl.getPort(),
                     newPath,
-                    queryMaker.get(),null);
+                    queryMaker.get(), null);
 
-            if (signed){
+            if (signed) {
                 sign(urlEndpoint, expireSeconds, privateKey, queryMaker, tmpUri);
             }
 
-            newUri = new URI(baseUrl.getScheme(),baseUrl.getUserInfo(),baseUrl.getHost(),baseUrl.getPort(),
+            newUri = new URI(baseUrl.getScheme(), baseUrl.getUserInfo(), baseUrl.getHost(), baseUrl.getPort(),
                     newPath,
-                    queryMaker.get(),null);
+                    queryMaker.get(), null);
 
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -124,8 +122,8 @@ public class UrlGen {
     }
 
     private static String buildFullUrl(String src, Map<String, String> queryParameters, List<Map<String, String>> transformation, String transformationPosition, boolean signed, long expireSeconds, String privateKey, String urlEndpoint) {
-        StringBuilder tr= new StringBuilder("");
-        if (transformation.size()>0) {
+        StringBuilder tr = new StringBuilder();
+        if (transformation.size() > 0) {
             tr.append("tr=");
             for (Map<String, String> map : transformation) {
                 Set<Map.Entry<String, String>> entries = map.entrySet();
@@ -145,45 +143,45 @@ public class UrlGen {
             }
         }
 
-        QueryMaker queryMaker=new QueryMaker();
-        queryMaker.put(String.format(Locale.US,"%s=%s","ik-sdk-version", Version.VERSION_CODE));
+        QueryMaker queryMaker = new QueryMaker();
+        queryMaker.put(String.format(Locale.US, "%s=%s", "ik-sdk-version", Version.VERSION_CODE));
 
         // check existing query params
-        if (null!=src){
-            String[] parts=src.split("\\?");
-            if (parts.length>1){
-                String[] queries=parts[1].split("&");
-                for (String query:queries){
+        if (null != src) {
+            String[] parts = src.split("\\?");
+            if (parts.length > 1) {
+                String[] queries = parts[1].split("&");
+                for (String query : queries) {
                     queryMaker.put(query);
                 }
             }
         }
 
-        if (null!=queryParameters){
-            for (Map.Entry<String,String> entry:queryParameters.entrySet()){
-                queryMaker.put(String.format(Locale.US,"%s=%s",entry.getKey(),entry.getValue()));
+        if (null != queryParameters) {
+            for (Map.Entry<String, String> entry : queryParameters.entrySet()) {
+                queryMaker.put(String.format(Locale.US, "%s=%s", entry.getKey(), entry.getValue()));
             }
         }
-        if (!tr.toString().equalsIgnoreCase("")){
+        if (!tr.toString().equalsIgnoreCase("")) {
             queryMaker.put(tr.toString());
         }
 
-        URI baseUrl=URI.create(src);
-        URI newUri= null;
+        URI baseUrl = URI.create(src);
+        URI newUri = null;
         try {
-            String newPath=baseUrl.getPath();
-            URI tmpUri = new URI(baseUrl.getScheme(),baseUrl.getUserInfo(),baseUrl.getHost(),baseUrl.getPort(),
+            String newPath = baseUrl.getPath();
+            URI tmpUri = new URI(baseUrl.getScheme(), baseUrl.getUserInfo(), baseUrl.getHost(), baseUrl.getPort(),
                     newPath,
-                    queryMaker.get(),null);
+                    queryMaker.get(), null);
 
 
-            if (signed){
+            if (signed) {
                 sign(urlEndpoint, expireSeconds, privateKey, queryMaker, tmpUri);
             }
 
-            newUri = new URI(baseUrl.getScheme(),baseUrl.getUserInfo(),baseUrl.getHost(),baseUrl.getPort(),
+            newUri = new URI(baseUrl.getScheme(), baseUrl.getUserInfo(), baseUrl.getHost(), baseUrl.getPort(),
                     newPath,
-                    queryMaker.get(),null);
+                    queryMaker.get(), null);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -191,25 +189,25 @@ public class UrlGen {
     }
 
     private static void sign(String urlEndpoint, long expireSeconds, String privateKey, QueryMaker queryMaker, URI tmpUri) {
-        long expiryTimestamp =  DEFAULT_TIMESTAMP;
-        if (expireSeconds > 0){
-            expiryTimestamp = ((Calendar.getInstance().getTimeInMillis()/1000)+ expireSeconds);
+        long expiryTimestamp = DEFAULT_TIMESTAMP;
+        if (expireSeconds > 0) {
+            expiryTimestamp = ((Calendar.getInstance().getTimeInMillis() / 1000) + expireSeconds);
         }
-        String signature = signUrl(privateKey, tmpUri.toString(), urlEndpoint,expiryTimestamp);
+        String signature = signUrl(privateKey, tmpUri.toString(), urlEndpoint, expiryTimestamp);
         queryMaker.put("ik-s=" + signature);
-        if(expiryTimestamp > 0 && expiryTimestamp != DEFAULT_TIMESTAMP) {
+        if (expiryTimestamp > 0 && expiryTimestamp != DEFAULT_TIMESTAMP) {
             queryMaker.put("ik-t=" + expiryTimestamp);
         }
     }
 
-    public static String signUrl(String privateKey, String url, String urlEndpoint, long expiryTimestamp){
-        if (expiryTimestamp < 1){
+    public static String signUrl(String privateKey, String url, String urlEndpoint, long expiryTimestamp) {
+        if (expiryTimestamp < 1) {
             expiryTimestamp = DEFAULT_TIMESTAMP;
         }
-        if (urlEndpoint.charAt(urlEndpoint.length()-1)!='/'){
-            urlEndpoint+="/";
+        if (urlEndpoint.charAt(urlEndpoint.length() - 1) != '/') {
+            urlEndpoint += "/";
         }
-        String replaceUrl=url.replace(urlEndpoint,"")+expiryTimestamp;
-        return HmacUtils.hmacSha1Hex(privateKey, replaceUrl);
+        String replaceUrl = url.replace(urlEndpoint, "") + expiryTimestamp;
+        return new HmacUtils(HmacAlgorithms.HMAC_SHA_1, privateKey).hmacHex(replaceUrl);
     }
 }

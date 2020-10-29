@@ -46,6 +46,7 @@ public class ResultList {
     public void setHelp(String help) {
         this.help = help;
     }
+
     public String getRaw() {
         return raw;
     }
@@ -54,12 +55,12 @@ public class ResultList {
         this.raw = raw;
     }
 
-    public List<Map<String,Object>> getMap(){
-        if (null!=raw) {
+    public List<Map<String, Object>> getMap() {
+        if (null != raw) {
             return new Gson().fromJson(raw, new TypeToken<List<Map<String, Object>>>() {
             }.getType());
         }
-        return new ArrayList<Map<String,Object>>();
+        return new ArrayList<>();
     }
 
     public List<BaseFile> getResults() {
