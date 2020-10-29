@@ -1,7 +1,5 @@
 package io.imagekit.sdk.tasks;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.imagekit.sdk.ImageKit;
 import io.imagekit.sdk.models.FileCreateRequest;
@@ -9,10 +7,8 @@ import io.imagekit.sdk.models.FileUpdateRequest;
 import io.imagekit.sdk.models.results.*;
 import io.imagekit.sdk.utils.Utils;
 import okhttp3.*;
-import okhttp3.mockwebserver.Dispatcher;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
+import okio.Timeout;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -23,12 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 public class RestClientTest {
@@ -618,6 +611,7 @@ public class RestClientTest {
                     .protocol(Protocol.HTTP_1_1)
                     .body(ResponseBody.create(MediaType.parse("application/json"),response));
         }
+
         @Override
         public Call newCall(Request request) {
             Call call=new Call() {
@@ -663,6 +657,12 @@ public class RestClientTest {
                     return false;
                 }
 
+                @NotNull
+                @Override
+                public Timeout timeout() {
+                    return Timeout.NONE;
+                }
+
                 @Override
                 public Call clone() {
                     return null;
@@ -670,6 +670,7 @@ public class RestClientTest {
             };
             return call;
         }
+
         public void setTimeoutException() {
             this.timeout = true;
         }
