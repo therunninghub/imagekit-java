@@ -43,7 +43,7 @@ public class MultipartBuilderTest {
 
         server.setDispatcher(new Dispatcher() {
             @Override
-            public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
+            public MockResponse dispatch(RecordedRequest request) {
                 return response;
             }
         });
@@ -77,7 +77,7 @@ public class MultipartBuilderTest {
                 .headers(Headers.of(headers))
                 .build();
 
-        Response response = okHttpClient.newCall(request).execute();
+        okHttpClient.newCall(request).execute();
 
         String boundary = body.boundary();
 

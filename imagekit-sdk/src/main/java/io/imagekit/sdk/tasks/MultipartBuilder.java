@@ -56,14 +56,14 @@ public class MultipartBuilder {
         if (fileUpdateRequest.getFileId().trim().length() < 1) {
             throw new RuntimeException("Error: File Id not provided.");
         }
-        return RequestBody.create(MediaType.parse("application/json; charset=utf-8"), new Gson().toJson(fileUpdateRequest));
+        return RequestBody.create(new Gson().toJson(fileUpdateRequest), MediaType.parse("application/json; charset=utf-8"));
     }
 
     public RequestBody build(String json) {
         if (json == null) {
             throw new RuntimeException("Error: You can't send null body.");
         } else {
-            return RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
+            return RequestBody.create(json, MediaType.parse("application/json; charset=utf-8"));
         }
     }
 }

@@ -60,7 +60,7 @@ public class ResultList {
             return new Gson().fromJson(raw, new TypeToken<List<Map<String, Object>>>() {
             }.getType());
         }
-        return new ArrayList<Map<String, Object>>();
+        return new ArrayList<>();
     }
 
     public List<BaseFile> getResults() {

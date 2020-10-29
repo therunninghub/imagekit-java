@@ -5,15 +5,14 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 public class BaseFileTest {
     private BaseFile SUT;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         SUT = new BaseFile();
     }
 
@@ -49,7 +48,7 @@ public class BaseFileTest {
         assertEquals(30, SUT.getSize());
         assertEquals("filePath", SUT.getFilePath());
         assertEquals(tags, SUT.getTags());
-        assertEquals(true, SUT.isPrivateFile());
+        assertTrue(SUT.isPrivateFile());
         assertEquals("0,0,10,20", SUT.getCustomCoordinates());
         assertEquals("image", SUT.getFileType());
     }

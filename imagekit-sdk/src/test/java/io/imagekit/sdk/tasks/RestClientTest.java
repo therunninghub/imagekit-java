@@ -8,6 +8,7 @@ import io.imagekit.sdk.models.results.*;
 import io.imagekit.sdk.utils.Utils;
 import okhttp3.*;
 import okio.Timeout;
+import org.hamcrest.MatcherAssert;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
@@ -101,7 +102,7 @@ public class RestClientTest {
         SUT.setClient(clientStub);
         FileCreateRequest fileCreateRequest = new FileCreateRequest("http://localhost", "demo.jpg");
         Result result = SUT.upload(fileCreateRequest);
-        assertThat("Un-processable Entity", is(result.getMessage()));
+        MatcherAssert.assertThat("Un-processable Entity", is(result.getMessage()));
     }
 
     @Test
@@ -113,7 +114,7 @@ public class RestClientTest {
         SUT.setClient(clientStub);
         FileCreateRequest fileCreateRequest = new FileCreateRequest("http://localhost", "demo.jpg");
         Result result = SUT.upload(fileCreateRequest);
-        assertThat("Error: Internal server error.", is(result.getMessage()));
+        MatcherAssert.assertThat("Error: Internal server error.", is(result.getMessage()));
     }
 
     @Test(expected = RuntimeException.class)
@@ -261,7 +262,7 @@ public class RestClientTest {
 
         assertEquals("https://api.imagekit.io/v1/files?limit=10&skip=0", SUT.request.url().toString());
 
-        assertThat(resp, is(result.getRaw()));
+        MatcherAssert.assertThat(resp, is(result.getRaw()));
     }
 
     @Test
@@ -316,7 +317,7 @@ public class RestClientTest {
         // Asserting endpoint sending to server
         assertEquals("https://api.imagekit.io/v1/files/598821f949c0a938d57563bd/details", SUT.request.url().toString());
         // Asserting mock response getting from server.
-        assertThat(resp, is(result.getRaw()));
+        MatcherAssert.assertThat(resp, is(result.getRaw()));
     }
 
     @Test
@@ -361,7 +362,7 @@ public class RestClientTest {
         SUT.setClient(clientStub);
         ResultMetaData result = SUT.getFileMetaData("598821f949c0a938d57563bd");
         assertEquals("https://api.imagekit.io/v1/files/598821f949c0a938d57563bd/metadata", SUT.request.url().toString());
-        assertThat(resp, is(result.getRaw()));
+        MatcherAssert.assertThat(resp, is(result.getRaw()));
     }
 
     @Test
@@ -407,7 +408,7 @@ public class RestClientTest {
         ResultMetaData result = SUT.getRemoteFileMetaData("http://remote_url.example.com/demo.png");
 
         assertEquals("https://api.imagekit.io/v1/metadata?url=http://remote_url.example.com/demo.png", SUT.request.url().toString());
-        assertThat(resp, is(result.getRaw()));
+        MatcherAssert.assertThat(resp, is(result.getRaw()));
     }
 
     @Test
@@ -443,7 +444,7 @@ public class RestClientTest {
         Result result = SUT.deleteFile("598821f949c0a938d57563bd");
 
         assertEquals("https://api.imagekit.io/v1/files/598821f949c0a938d57563bd", SUT.request.url().toString());
-        assertThat("File deleted successfully!", is(result.getMessage()));
+        MatcherAssert.assertThat("File deleted successfully!", is(result.getMessage()));
     }
 
     @Test
@@ -454,7 +455,7 @@ public class RestClientTest {
                 500, "Internal Server Error");
         SUT.setClient(clientStub);
         Result result = SUT.deleteFile("fileId");
-        assertThat("Error: Internal server error.", is(result.getMessage()));
+        MatcherAssert.assertThat("Error: Internal server error.", is(result.getMessage()));
     }
 
     @Test
@@ -486,8 +487,8 @@ public class RestClientTest {
                 200, "Ok");
         SUT.setClient(clientStub);
         ResultFileDelete result = SUT.bulkDeleteFiles(fileIds);
-        assertThat("File deleted successfully!", is(result.getMessage()));
-        assertThat(resp, is(result.getRaw()));
+        MatcherAssert.assertThat("File deleted successfully!", is(result.getMessage()));
+        MatcherAssert.assertThat(resp, is(result.getRaw()));
     }
 
     @Test
@@ -509,8 +510,8 @@ public class RestClientTest {
                 404, "Not found");
         SUT.setClient(clientStub);
         ResultFileDelete result = SUT.bulkDeleteFiles(fileIds);
-        assertThat("The requested file(s) does not exist.", is(result.getMessage()));
-        assertThat(resp, is(result.getRaw()));
+        MatcherAssert.assertThat("The requested file(s) does not exist.", is(result.getMessage()));
+        MatcherAssert.assertThat(resp, is(result.getRaw()));
     }
 
     @Test
@@ -524,7 +525,7 @@ public class RestClientTest {
                 500, "Ok");
         SUT.setClient(clientStub);
         ResultFileDelete result = SUT.bulkDeleteFiles(fileIds);
-        assertThat("Error: Internal server error.", is(result.getMessage()));
+        MatcherAssert.assertThat("Error: Internal server error.", is(result.getMessage()));
     }
 
     @Test
@@ -535,7 +536,7 @@ public class RestClientTest {
                 200, "Ok");
         SUT.setClient(clientStub);
         ResultCache result = SUT.purgeCache("https://ik.imagekit.io/your_imagekit_id/default-image.jpg");
-        assertThat("my_request_id", is(result.getRequestId()));
+        MatcherAssert.assertThat("my_request_id", is(result.getRequestId()));
     }
 
     @Test
@@ -546,7 +547,7 @@ public class RestClientTest {
                 500, "Internal Server Error");
         SUT.setClient(clientStub);
         ResultCache result = SUT.purgeCache("https://ik.imagekit.io/your_imagekit_id/default-image.jpg");
-        assertThat("Error: Internal server error.", is(result.getMessage()));
+        MatcherAssert.assertThat("Error: Internal server error.", is(result.getMessage()));
     }
 
     @Test
@@ -571,7 +572,7 @@ public class RestClientTest {
         ResultCacheStatus result = SUT.getPurgeCacheStatus("requestId");
 
         assertEquals("https://api.imagekit.io/v1/files/purge/requestId", SUT.request.url().toString());
-        assertThat("Complete", is(result.getStatus()));
+        MatcherAssert.assertThat("Complete", is(result.getStatus()));
     }
 
     @Test
@@ -582,7 +583,7 @@ public class RestClientTest {
                 500, "Internal Server Error");
         SUT.setClient(clientStub);
         ResultCacheStatus result = SUT.getPurgeCacheStatus("requestId");
-        assertThat("Error: Internal server error.", is(result.getMessage()));
+        MatcherAssert.assertThat("Error: Internal server error.", is(result.getMessage()));
     }
 
     @Test
@@ -609,24 +610,24 @@ public class RestClientTest {
             builder.code(code)
                     .message(message)
                     .protocol(Protocol.HTTP_1_1)
-                    .body(ResponseBody.create(MediaType.parse("application/json"), response));
+                    .body(ResponseBody.create(response, MediaType.parse("application/json")));
         }
 
         @Override
         public Call newCall(Request request) {
-            Call call = new Call() {
+            return new Call() {
                 @Override
                 public Request request() {
                     return request;
                 }
 
                 @Override
-                public Response execute() throws IOException {
+                public Response execute() {
                     String credential = request.headers().get("Authorization");
                     if (credential == null) {
-                        builder.body(ResponseBody.create(MediaType.parse("application/json"), "{\"message\":\"Your request does not contain private API key.\",\"help\":\"For support kindly contact us at support@imagekit.io .\"}"));
+                        builder.body(ResponseBody.create("{\"message\":\"Your request does not contain private API key.\",\"help\":\"For support kindly contact us at support@imagekit.io .\"}", MediaType.parse("application/json")));
                     } else if (!credential.contains("Basic")) {
-                        builder.body(ResponseBody.create(MediaType.parse("application/json"), "{\"message\":\"Your request does not contain private API key.\",\"help\":\"For support kindly contact us at support@imagekit.io .\"}"));
+                        builder.body(ResponseBody.create("{\"message\":\"Your request does not contain private API key.\",\"help\":\"For support kindly contact us at support@imagekit.io .\"}", MediaType.parse("application/json")));
                     }
 
                     builder.request(request);
@@ -667,7 +668,6 @@ public class RestClientTest {
                     return null;
                 }
             };
-            return call;
         }
 
         public void setTimeoutException() {

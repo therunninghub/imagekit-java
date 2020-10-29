@@ -1,11 +1,9 @@
 package io.imagekit.sdk.config;
 
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class ConfigurationTest {
@@ -13,7 +11,7 @@ public class ConfigurationTest {
     Configuration SUT;
 
     @Test
-    public void configFileExit_validate_successExpected() throws IOException {
+    public void configFileExit_validate_successExpected() {
         SUT = new Configuration();
         SUT.setPrivateKey("privateKey");
         SUT.setPublicKey("publicKey");
@@ -24,7 +22,7 @@ public class ConfigurationTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void configNotExit_validate_errorExpected() throws IOException {
+    public void configNotExit_validate_errorExpected() {
         SUT = new Configuration();
         SUT.setPrivateKey("privateKey");
         SUT.setUrlEndpoint("endPoint");
@@ -34,13 +32,13 @@ public class ConfigurationTest {
     }
 
     @Test
-    public void config_getter_setter_successExpected() throws IOException {
+    public void config_getter_setter_successExpected() {
         String privateKey = "privateKey";
         String publicKey = "publicKey";
         String endPoint = "endPoint";
         SUT = new Configuration(publicKey, privateKey, endPoint);
-        assertThat(privateKey, is(SUT.getPrivateKey()));
-        assertThat(publicKey, is(SUT.getPublicKey()));
-        assertThat(endPoint, is(SUT.getUrlEndpoint()));
+        MatcherAssert.assertThat(privateKey, is(SUT.getPrivateKey()));
+        MatcherAssert.assertThat(publicKey, is(SUT.getPublicKey()));
+        MatcherAssert.assertThat(endPoint, is(SUT.getUrlEndpoint()));
     }
 }

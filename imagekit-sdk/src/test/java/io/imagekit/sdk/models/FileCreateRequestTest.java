@@ -9,8 +9,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 public class FileCreateRequestTest {
@@ -60,10 +59,10 @@ public class FileCreateRequestTest {
         assertEquals("0,0,10,20", SUT.getCustomCoordinates());
         assertEquals("file_name", SUT.getFileName());
         assertEquals("dir1", SUT.getFolder());
-        assertEquals(true, SUT.isPrivateFile());
+        assertTrue(SUT.isPrivateFile());
         assertEquals(responseFields, SUT.getResponseFields());
         assertEquals(tags, SUT.getTags());
-        assertEquals(true, SUT.isUseUniqueFileName());
+        assertTrue(SUT.isUseUniqueFileName());
 
     }
 //

@@ -1,6 +1,7 @@
 package io.imagekit.sdk.utils;
 
 import io.imagekit.sdk.config.Configuration;
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
 import java.io.File;
@@ -29,7 +30,7 @@ public class UtilsTest {
         list.add("Element 2");
         list.add("Element 3");
         String data = Utils.listToString(list);
-        assertThat("Element 1,Element 2,Element 3", is(data));
+        MatcherAssert.assertThat("Element 1,Element 2,Element 3", is(data));
     }
 
     @Test

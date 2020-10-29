@@ -11,7 +11,7 @@ public class QueryMakerTest {
     QueryMaker SUT;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         SUT = new QueryMaker();
     }
 

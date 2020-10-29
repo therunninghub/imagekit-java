@@ -73,7 +73,7 @@ class App {
         Map<String, String> queryParam = new HashMap<>();
         queryParam.put("v", "123");
 
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -92,7 +92,7 @@ class App {
         transformation.add(format);
 
 
-        Map<String, Object> options = new HashMap();
+        Map<String, Object> options = new HashMap<>();
         options.put("path", baseFile.getFilePath());
         options.put("transformation", transformation);
 
@@ -188,7 +188,7 @@ class App {
     }
 
     private static void deleteFiles(List<BaseFile> files) {
-        List<String> fileIds = files.stream().map(baseFile -> baseFile.getFileId()).collect(Collectors.toList());
+        List<String> fileIds = files.stream().map(BaseFile::getFileId).collect(Collectors.toList());
         System.out.println(Color.ANSI_CYAN + ">> Deleting file:" + Color.ANSI_RESET);
         System.out.println(">> Sending file id: " + fileIds);
         ResultFileDelete result = ImageKit.getInstance().bulkDeleteFiles(fileIds);
@@ -275,7 +275,7 @@ class App {
         System.out.println(">> Fetching done...");
         System.out.println(Color.ANSI_GREEN + ">> Response:" + Color.ANSI_RESET);
         System.out.println(">> No. of files in server: " + resultList.getResults().size());
-        System.out.println(">> FileIds: " + resultList.getResults().stream().map(baseFile -> baseFile.getFileId()).collect(Collectors.toList()));
+        System.out.println(">> FileIds: " + resultList.getResults().stream().map(BaseFile::getFileId).collect(Collectors.toList()));
         System.out.println(Color.ANSI_GREEN + ">> Raw Response:" + Color.ANSI_RESET);
         System.out.println(resultList.getRaw());
         System.out.println(Color.ANSI_GREEN + ">> Map Response:" + Color.ANSI_RESET);

@@ -1,8 +1,7 @@
 package io.imagekit.sdk.tasks;
 
 
-import org.junit.After;
-import org.junit.Before;
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -13,13 +12,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 public class CalculationTest {
-    Calculation SUT;
-
-    @Before
-    public void setUp() throws Exception {
-        SUT = new Calculation();
-    }
-
     @Test(expected = RuntimeException.class)
     public void nullPrivateKey_getAuthenticatedParams_throwException() {
         Calculation.getAuthenticatedParams(UUID.randomUUID().toString(), Calendar.getInstance().getTimeInMillis(), null);
@@ -42,7 +34,7 @@ public class CalculationTest {
         String privateKey = "my_private_key";
         long expire = Calendar.getInstance().getTimeInMillis();
         Map<String, String> authenticatedParams = Calculation.getAuthenticatedParams(token, expire, privateKey);
-        assertThat(authenticatedParams.get("token"), is(token));
+        MatcherAssert.assertThat(authenticatedParams.get("token"), is(token));
         assertEquals(String.valueOf(expire), authenticatedParams.get("expire"));
         assertNotNull(authenticatedParams.get("signature"));
     }
@@ -52,7 +44,7 @@ public class CalculationTest {
         String token = UUID.randomUUID().toString();
         String privateKey = "my_private_key";
         Map<String, String> authenticatedParams = Calculation.getAuthenticatedParams(token, 0, privateKey);
-        assertThat(authenticatedParams.get("token"), is(token));
+        MatcherAssert.assertThat(authenticatedParams.get("token"), is(token));
         assertNotNull(authenticatedParams.get("expire"));
         assertNotNull(authenticatedParams.get("signature"));
     }
@@ -95,10 +87,5 @@ public class CalculationTest {
     public void incorrectHex_isValidHex_falseExpected() {
         boolean result = Calculation.isValidHex("a4a65595ac94518T");
         assertFalse(result);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        SUT = null;
     }
 }

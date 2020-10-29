@@ -4,6 +4,7 @@ import io.imagekit.sdk.ImageKit;
 import io.imagekit.sdk.config.Configuration;
 import io.imagekit.sdk.constants.Transformer;
 import io.imagekit.sdk.constants.Version;
+import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.HmacUtils;
 
 import java.net.URI;
@@ -207,6 +208,6 @@ public class UrlGen {
             urlEndpoint += "/";
         }
         String replaceUrl = url.replace(urlEndpoint, "") + expiryTimestamp;
-        return HmacUtils.hmacSha1Hex(privateKey, replaceUrl);
+        return new HmacUtils(HmacAlgorithms.HMAC_SHA_1, privateKey).hmacHex(replaceUrl);
     }
 }

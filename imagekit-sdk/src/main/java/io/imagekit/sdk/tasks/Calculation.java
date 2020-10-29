@@ -1,5 +1,6 @@
 package io.imagekit.sdk.tasks;
 
+import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.HmacUtils;
 
 import java.math.BigInteger;
@@ -21,7 +22,7 @@ public class Calculation {
         }
         if (privateKey == null) throw new RuntimeException("Private key can't be null.");
 
-        String signature = HmacUtils.hmacSha1Hex(privateKey, token + expire);
+        String signature = new HmacUtils(HmacAlgorithms.HMAC_SHA_1, privateKey).hmacHex(token + expire);
 
         Map<String, String> auth = new HashMap<>();
         auth.put("token", token);

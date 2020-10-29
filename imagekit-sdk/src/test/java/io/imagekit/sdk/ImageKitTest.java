@@ -8,6 +8,7 @@ import io.imagekit.sdk.models.FileUpdateRequest;
 import io.imagekit.sdk.models.results.*;
 import io.imagekit.sdk.tasks.RestClient;
 import io.imagekit.sdk.utils.Utils;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,7 +46,7 @@ public class ImageKitTest {
 
     @Test
     public void getUrl_with_height_width_options() {
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -56,12 +57,12 @@ public class ImageKitTest {
         options.put("transformation", transformation);
         String url = SUT.getUrl(options);
 
-        assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
+        MatcherAssert.assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
     }
 
     @Test
     public void getUrl_with_height_width_options_url_version_check() {
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -70,13 +71,13 @@ public class ImageKitTest {
         options.put("path", "/default-image.jpg");
         options.put("transformation", transformation);
         String url = SUT.getUrl(options);
-        assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
+        MatcherAssert.assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
         assertTrue(url.contains("ik-sdk-version=" + Version.VERSION_CODE));
     }
 
     @Test
     public void getUrl_with_new_transformation_params_options() {
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -89,12 +90,12 @@ public class ImageKitTest {
         options.put("path", "/default-image.jpg");
         options.put("transformation", transformation);
         String url = SUT.getUrl(options);
-        assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600:myparam-40/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
+        MatcherAssert.assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600:myparam-40/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
     }
 
     @Test
     public void getUrl_with_slash_in_path() {
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -104,12 +105,12 @@ public class ImageKitTest {
         options.put("path", "/default-image.jpg");
         options.put("transformation", transformation);
         String url = SUT.getUrl(options);
-        assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
+        MatcherAssert.assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
     }
 
     @Test
     public void getUrl_without_slash_in_path() {
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -118,12 +119,12 @@ public class ImageKitTest {
         options.put("path", "default-image.jpg");
         options.put("transformation", transformation);
         String url = SUT.getUrl(options);
-        assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
+        MatcherAssert.assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
     }
 
     @Test
     public void getUrl_with_overriding_urlEndpoint() {
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -135,12 +136,12 @@ public class ImageKitTest {
         options.put("transformation", transformation);
 
         String url = SUT.getUrl(options);
-        assertThat("https://ik.imagekit.io/your_override_imagekit_id/tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
+        MatcherAssert.assertThat("https://ik.imagekit.io/your_override_imagekit_id/tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
     }
 
     @Test
     public void getUrl_with_overriding_urlEndpoint_double_slash_tests() {
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -152,7 +153,7 @@ public class ImageKitTest {
         options.put("transformation", transformation);
 
         String url = SUT.getUrl(options);
-        assertThat("https://ik.imagekit.io/your_override_imagekit_id/tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
+        MatcherAssert.assertThat("https://ik.imagekit.io/your_override_imagekit_id/tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE, is(url));
     }
 
     @Test
@@ -160,7 +161,7 @@ public class ImageKitTest {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("v", "123");
 
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -173,7 +174,7 @@ public class ImageKitTest {
         options.put("transformationPosition", "query");
 
         String url = SUT.getUrl(options);
-        assertThat(SUT.getConfig().getUrlEndpoint() + "default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&v=123&tr=w-400,h-600", is(url));
+        MatcherAssert.assertThat(SUT.getConfig().getUrlEndpoint() + "default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&v=123&tr=w-400,h-600", is(url));
     }
 
     @Test
@@ -181,7 +182,7 @@ public class ImageKitTest {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("v", "123");
 
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -193,7 +194,7 @@ public class ImageKitTest {
         options.put("transformation", transformation);
 
         String url = SUT.getUrl(options);
-        assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&v=123", is(url));
+        MatcherAssert.assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&v=123", is(url));
     }
 
     @Test
@@ -201,7 +202,7 @@ public class ImageKitTest {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("v", "123");
 
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -217,7 +218,7 @@ public class ImageKitTest {
         options.put("transformationPosition", "query");
 
         String url = SUT.getUrl(options);
-        assertThat(SUT.getConfig().getUrlEndpoint() + "default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&v=123&tr=w-400,h-600:rt-90", is(url));
+        MatcherAssert.assertThat(SUT.getConfig().getUrlEndpoint() + "default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&v=123&tr=w-400,h-600:rt-90", is(url));
     }
 
     @Test
@@ -225,7 +226,7 @@ public class ImageKitTest {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("v", "123");
 
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -240,7 +241,7 @@ public class ImageKitTest {
         options.put("transformation", transformation);
 
         String url = SUT.getUrl(options);
-        assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600:rt-90/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&v=123", is(url));
+        MatcherAssert.assertThat(SUT.getConfig().getUrlEndpoint() + "tr:w-400,h-600:rt-90/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&v=123", is(url));
     }
 
     @Test
@@ -249,7 +250,7 @@ public class ImageKitTest {
         queryParams.put("v", "123");
         queryParams.put("z", "234");
 
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -261,7 +262,7 @@ public class ImageKitTest {
         options.put("transformation", transformation);
 
         String url = SUT.getUrl(options);
-        assertThat("https://ik.imagekit.io/your_imagekit_id/endpoint/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&q=abc&v=123&z=234&tr=w-400,h-600", is(url));
+        MatcherAssert.assertThat("https://ik.imagekit.io/your_imagekit_id/endpoint/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&q=abc&v=123&z=234&tr=w-400,h-600", is(url));
     }
 
     @Test
@@ -270,7 +271,7 @@ public class ImageKitTest {
         queryParams.put("v", "123");
         queryParams.put("z", "234");
 
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -282,7 +283,7 @@ public class ImageKitTest {
         options.put("transformation", transformation);
 
         String url = SUT.getUrl(options);
-        assertThat("https://ik.imagekit.io/your_imagekit_id/endpoint/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&q=abc&v=123&z=234&tr=w-400,h-600", is(url));
+        MatcherAssert.assertThat("https://ik.imagekit.io/your_imagekit_id/endpoint/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&q=abc&v=123&z=234&tr=w-400,h-600", is(url));
     }
 
     @Test
@@ -291,7 +292,7 @@ public class ImageKitTest {
         queryParams.put("v", "123");
         queryParams.put("z", "234");
 
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -303,12 +304,12 @@ public class ImageKitTest {
         options.put("transformation", transformation);
 
         String url = SUT.getUrl(options);
-        assertThat("https://ik.imagekit.io/your_imagekit_id/endpoint/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&v=123&z=234&tr=w-400,h-600", is(url));
+        MatcherAssert.assertThat("https://ik.imagekit.io/your_imagekit_id/endpoint/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&v=123&z=234&tr=w-400,h-600", is(url));
     }
 
     @Test
     public void getUrl_with_src() {
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -319,7 +320,7 @@ public class ImageKitTest {
         options.put("transformation", transformation);
 
         String url = SUT.getUrl(options);
-        assertThat("https://ik.imagekit.io/your_imagekit_id/endpoint/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&tr=w-400,h-600", is(url));
+        MatcherAssert.assertThat("https://ik.imagekit.io/your_imagekit_id/endpoint/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&tr=w-400,h-600", is(url));
     }
 
     @Test
@@ -328,7 +329,7 @@ public class ImageKitTest {
         queryParams.put("v", "123");
         queryParams.put("z", "234");
 
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -340,7 +341,7 @@ public class ImageKitTest {
         options.put("transformation", transformation);
 
         String url = SUT.getUrl(options);
-        assertThat("https://ik.imagekit.io/your_imagekit_id/endpoint/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&srcParam=srcParamValue&v=123&z=234&tr=w-400,h-600", is(url));
+        MatcherAssert.assertThat("https://ik.imagekit.io/your_imagekit_id/endpoint/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&srcParam=srcParamValue&v=123&z=234&tr=w-400,h-600", is(url));
     }
 
     @Test
@@ -349,7 +350,7 @@ public class ImageKitTest {
         queryParam.put("v", "123");
         queryParam.put("z", "234");
 
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -362,12 +363,12 @@ public class ImageKitTest {
         options.put("transformationPosition", "path");
 
         String url = SUT.getUrl(options);
-        assertThat("https://ik.imagekit.io/your_imagekit_id/endpoint/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&v=123&z=234&tr=w-400,h-600", is(url));
+        MatcherAssert.assertThat("https://ik.imagekit.io/your_imagekit_id/endpoint/default-image.jpg?ik-sdk-version=" + Version.VERSION_CODE + "&v=123&z=234&tr=w-400,h-600", is(url));
     }
 
     @Test
     public void getUrl_with_signature() {
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("width", "100");
         transformation.add(scale);
@@ -398,7 +399,7 @@ public class ImageKitTest {
 
     @Test
     public void getUrl_with_time_expire() {
-        List<Map<String, String>> transformation = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> transformation = new ArrayList<>();
         Map<String, String> scale = new HashMap<>();
         scale.put("height", "600");
         scale.put("width", "400");
@@ -427,7 +428,7 @@ public class ImageKitTest {
         result.setFilePath("/myfile.jpg");
         when(restClient.upload(any(FileCreateRequest.class))).thenReturn(result);
         Result result1 = SUT.upload(fileCreateRequest);
-        assertThat(result1.isSuccessful(), is(result.isSuccessful()));
+        MatcherAssert.assertThat(result1.isSuccessful(), is(result.isSuccessful()));
     }
 
     @Test
@@ -437,7 +438,7 @@ public class ImageKitTest {
         result.setSuccessful(false);
         when(restClient.upload(any(FileCreateRequest.class))).thenReturn(result);
         Result result1 = SUT.upload(fileCreateRequest);
-        assertThat(result1.isSuccessful(), is(result.isSuccessful()));
+        MatcherAssert.assertThat(result1.isSuccessful(), is(result.isSuccessful()));
     }
 
     @Test(expected = RuntimeException.class)
@@ -447,7 +448,7 @@ public class ImageKitTest {
         result.setSuccessful(false);
         when(restClient.upload(any(FileCreateRequest.class))).thenThrow(new RuntimeException());
         Result result1 = SUT.upload(fileCreateRequest);
-        assertThat(result1.isSuccessful(), is(result.isSuccessful()));
+        MatcherAssert.assertThat(result1.isSuccessful(), is(result.isSuccessful()));
     }
 
     @Test
@@ -458,7 +459,7 @@ public class ImageKitTest {
         when(restClient.updateDetail(any(FileUpdateRequest.class))).thenReturn(result);
 
         Result result1 = SUT.updateFileDetail(fileUpdateRequest);
-        assertThat(result1.isSuccessful(), is(result.isSuccessful()));
+        MatcherAssert.assertThat(result1.isSuccessful(), is(result.isSuccessful()));
     }
 
     @Test(expected = NullPointerException.class)
@@ -469,7 +470,7 @@ public class ImageKitTest {
         when(restClient.updateDetail(any(FileUpdateRequest.class))).thenThrow(new NullPointerException());
 
         Result result1 = SUT.updateFileDetail(fileUpdateRequest);
-        assertThat(result1.isSuccessful(), is(result.isSuccessful()));
+        MatcherAssert.assertThat(result1.isSuccessful(), is(result.isSuccessful()));
     }
 
     @Test
@@ -484,7 +485,7 @@ public class ImageKitTest {
         options.put("limit", "10");
 
         ResultList resultList1 = SUT.getFileList(options);
-        assertThat(resultList1.getResults().size(), is(resultList.getResults().size()));
+        MatcherAssert.assertThat(resultList1.getResults().size(), is(resultList.getResults().size()));
     }
 
     @Test
@@ -494,7 +495,7 @@ public class ImageKitTest {
         when(restClient.getFileDetail(any(String.class))).thenReturn(result);
 
         Result result1 = SUT.getFileDetail("fileId");
-        assertThat(result1.isSuccessful(), is(result.isSuccessful()));
+        MatcherAssert.assertThat(result1.isSuccessful(), is(result.isSuccessful()));
     }
 
     @Test
@@ -504,7 +505,7 @@ public class ImageKitTest {
         when(restClient.getFileMetaData(any(String.class))).thenReturn(result);
 
         ResultMetaData result1 = SUT.getFileMetadata("fileId");
-        assertThat(result1.isSuccessful(), is(result.isSuccessful()));
+        MatcherAssert.assertThat(result1.isSuccessful(), is(result.isSuccessful()));
     }
 
     @Test
@@ -514,7 +515,7 @@ public class ImageKitTest {
         when(restClient.getRemoteFileMetaData(any(String.class))).thenReturn(result);
 
         ResultMetaData result1 = SUT.getRemoteFileMetadata("remote_url");
-        assertThat(result1.isSuccessful(), is(result.isSuccessful()));
+        MatcherAssert.assertThat(result1.isSuccessful(), is(result.isSuccessful()));
     }
 
     @Test
@@ -524,7 +525,7 @@ public class ImageKitTest {
         when(restClient.deleteFile(any(String.class))).thenReturn(result);
 
         Result result1 = SUT.deleteFile("fileId");
-        assertThat(result1.isSuccessful(), is(result.isSuccessful()));
+        MatcherAssert.assertThat(result1.isSuccessful(), is(result.isSuccessful()));
     }
 
     @Test
@@ -539,7 +540,7 @@ public class ImageKitTest {
         result.setSuccessful(true);
         when(restClient.bulkDeleteFiles(any())).thenReturn(result);
         ResultFileDelete result1 = SUT.bulkDeleteFiles(fileIds);
-        assertThat(result1.isSuccessful(), is(result.isSuccessful()));
+        MatcherAssert.assertThat(result1.isSuccessful(), is(result.isSuccessful()));
     }
 
     @Test
@@ -550,8 +551,8 @@ public class ImageKitTest {
         when(restClient.purgeCache(any(String.class))).thenReturn(result);
 
         ResultCache result1 = SUT.purgeCache("fileId");
-        assertThat(result1.isSuccessful(), is(result.isSuccessful()));
-        assertThat(result1.getRequestId(), is(result.getRequestId()));
+        MatcherAssert.assertThat(result1.isSuccessful(), is(result.isSuccessful()));
+        MatcherAssert.assertThat(result1.getRequestId(), is(result.getRequestId()));
     }
 
     @Test
@@ -562,8 +563,8 @@ public class ImageKitTest {
         when(restClient.getPurgeCacheStatus(any(String.class))).thenReturn(result);
 
         ResultCacheStatus result1 = SUT.getPurgeCacheStatus("requestId");
-        assertThat(result1.isSuccessful(), is(result.isSuccessful()));
-        assertThat(result1.getStatus(), is(result.getStatus()));
+        MatcherAssert.assertThat(result1.isSuccessful(), is(result.isSuccessful()));
+        MatcherAssert.assertThat(result1.getStatus(), is(result.getStatus()));
     }
 
     @Test
