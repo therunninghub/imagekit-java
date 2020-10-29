@@ -1,9 +1,5 @@
 package io.imagekit.sdk.models;
 
-import com.google.gson.Gson;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-
 import java.util.List;
 
 public class FileUpdateRequest {

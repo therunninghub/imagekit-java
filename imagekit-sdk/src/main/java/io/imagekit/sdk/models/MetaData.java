@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import java.util.List;
 
 public class MetaData {
+    EXIFObject exif;
     private float height;
     private float width;
     private float size;
@@ -14,7 +15,6 @@ public class MetaData {
     private float density;
     private boolean hasTransparency;
     private String pHash;
-    EXIFObject exif;
 
 
     // Getter Methods
@@ -23,78 +23,78 @@ public class MetaData {
         return height;
     }
 
-    public float getWidth() {
-        return width;
-    }
-
-    public float getSize() {
-        return size;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public boolean getHasColorProfile() {
-        return hasColorProfile;
-    }
-
-    public float getQuality() {
-        return quality;
-    }
-
-    public float getDensity() {
-        return density;
-    }
-
-    public boolean getHasTransparency() {
-        return hasTransparency;
-    }
-
-    public String getPHash() {
-        return pHash;
-    }
-
-    public EXIFObject getExif() {
-        return exif;
-    }
-
-    // Setter Methods
-
     public void setHeight(float height) {
         this.height = height;
+    }
+
+    public float getWidth() {
+        return width;
     }
 
     public void setWidth(float width) {
         this.width = width;
     }
 
+    public float getSize() {
+        return size;
+    }
+
     public void setSize(float size) {
         this.size = size;
+    }
+
+    public String getFormat() {
+        return format;
     }
 
     public void setFormat(String format) {
         this.format = format;
     }
 
+    public boolean getHasColorProfile() {
+        return hasColorProfile;
+    }
+
     public void setHasColorProfile(boolean hasColorProfile) {
         this.hasColorProfile = hasColorProfile;
+    }
+
+    // Setter Methods
+
+    public float getQuality() {
+        return quality;
     }
 
     public void setQuality(float quality) {
         this.quality = quality;
     }
 
+    public float getDensity() {
+        return density;
+    }
+
     public void setDensity(float density) {
         this.density = density;
+    }
+
+    public boolean getHasTransparency() {
+        return hasTransparency;
     }
 
     public void setHasTransparency(boolean hasTransparency) {
         this.hasTransparency = hasTransparency;
     }
 
+    public String getPHash() {
+        return pHash;
+    }
+
     public void setPHash(String pHash) {
         this.pHash = pHash;
+    }
+
+    public EXIFObject getExif() {
+        return exif;
     }
 
     public void setExif(EXIFObject exifObject) {
@@ -189,7 +189,7 @@ public class MetaData {
         }
     }
 
-    public class ImageObject{
+    public class ImageObject {
         private String Make;
         private String Model;
         private int Orientation;
@@ -311,7 +311,7 @@ public class MetaData {
         }
     }
 
-    public class Thumbnail{
+    public class Thumbnail {
         private int Compression;
         private int XResolution;
         private int YResolution;
@@ -383,7 +383,7 @@ public class MetaData {
         }
     }
 
-    public class Exif{
+    public class Exif {
         private double ExposureTime;
         private double FNumber;
         private int ExposureProgram;
@@ -675,7 +675,7 @@ public class MetaData {
         }
     }
 
-    public class GPS{
+    public class GPS {
         private List<Integer> GPSVersionID;
 
         public GPS() {
@@ -697,7 +697,7 @@ public class MetaData {
         }
     }
 
-    public class Interoperability{
+    public class Interoperability {
         private String InteropIndex;
         private String InteropVersion;
 

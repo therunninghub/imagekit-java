@@ -8,68 +8,61 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 public class MultipartBuilder {
-    public MultipartBody build(FileCreateRequest fileCreateRequest){
+    public MultipartBody build(FileCreateRequest fileCreateRequest) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
-        if (null!=fileCreateRequest.url){
-            builder.addFormDataPart("file",fileCreateRequest.url.toString());
-        } else if (null!=fileCreateRequest.base64) {
+        if (null != fileCreateRequest.url) {
+            builder.addFormDataPart("file", fileCreateRequest.url.toString());
+        } else if (null != fileCreateRequest.base64) {
             builder.addFormDataPart("file", fileCreateRequest.base64);
-        } else if (null!=fileCreateRequest.bytes){
+        } else if (null != fileCreateRequest.bytes) {
             builder.addFormDataPart("file", Utils.bytesToBase64(fileCreateRequest.bytes));
-        }
-        else {
+        } else {
             throw new RuntimeException("Error: File not provided.");
         }
-        if (null!=fileCreateRequest.fileName) {
+        if (null != fileCreateRequest.fileName) {
             builder.addFormDataPart("fileName", fileCreateRequest.fileName);
-        }
-        else {
+        } else {
             throw new RuntimeException("Error: Filename not provided");
         }
         if (fileCreateRequest.useUniqueFileName) {
             builder.addFormDataPart("useUniqueFileName", "true");
-        }else  {
+        } else {
             builder.addFormDataPart("useUniqueFileName", "false");
         }
-        if (null!=fileCreateRequest.tags) {
+        if (null != fileCreateRequest.tags) {
             builder.addFormDataPart("tags", Utils.listToString(fileCreateRequest.tags));
         }
-        if (null!=fileCreateRequest.folder) {
+        if (null != fileCreateRequest.folder) {
             builder.addFormDataPart("folder", fileCreateRequest.folder);
         }
         if (fileCreateRequest.isPrivateFile) {
             builder.addFormDataPart("isPrivateFile", "true");
         }
-        if (null!=fileCreateRequest.customCoordinates) {
+        if (null != fileCreateRequest.customCoordinates) {
             builder.addFormDataPart("customCoordinates", fileCreateRequest.customCoordinates);
         }
-        if (null!=fileCreateRequest.responseFields) {
+        if (null != fileCreateRequest.responseFields) {
             builder.addFormDataPart("responseFields", Utils.listToString(fileCreateRequest.responseFields));
         }
         return builder.build();
     }
 
-    public RequestBody build(FileUpdateRequest fileUpdateRequest){
-        if (fileUpdateRequest.getFileId()==null){
+    public RequestBody build(FileUpdateRequest fileUpdateRequest) {
+        if (fileUpdateRequest.getFileId() == null) {
             throw new RuntimeException("Error: File Id not provided.");
         }
-        if (fileUpdateRequest.getFileId().trim().length()<1){
+        if (fileUpdateRequest.getFileId().trim().length() < 1) {
             throw new RuntimeException("Error: File Id not provided.");
         }
         return RequestBody.create(MediaType.parse("application/json; charset=utf-8"), new Gson().toJson(fileUpdateRequest));
     }
 
-    public RequestBody build(String json){
-        if (json==null){
+    public RequestBody build(String json) {
+        if (json == null) {
             throw new RuntimeException("Error: You can't send null body.");
-        }
-        else {
+        } else {
             return RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
         }
     }

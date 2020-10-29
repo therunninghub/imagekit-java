@@ -5,7 +5,8 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 public class BaseFileTest {
@@ -13,19 +14,19 @@ public class BaseFileTest {
 
     @Before
     public void setUp() throws Exception {
-        SUT=new BaseFile();
+        SUT = new BaseFile();
     }
 
     @Test
     public void constructor_test() {
-        List<String> tags=mock(List.class);
-        SUT=new BaseFile("fileId", "name", "url", "thumbnail", 10, 10, 20, "filePath", tags,true, "0,0,10,20", "image");
+        List<String> tags = mock(List.class);
+        SUT = new BaseFile("fileId", "name", "url", "thumbnail", 10, 10, 20, "filePath", tags, true, "0,0,10,20", "image");
         assertNotNull(SUT);
     }
 
     @Test
     public void test_getter_setter() {
-        List<String> tags=mock(List.class);
+        List<String> tags = mock(List.class);
 //        SUT=new BaseFile("fileId", "name", "url", "thumbnail", 10, 10, 20, "filePath", tags,true, "0,0,10,20", "fileType");
         SUT.setFileId("fileId");
         SUT.setName("name");
@@ -39,17 +40,17 @@ public class BaseFileTest {
         SUT.setPrivateFile(true);
         SUT.setCustomCoordinates("0,0,10,20");
         SUT.setFileType("image");
-        assertEquals("fileId",SUT.getFileId());
-        assertEquals("name",SUT.getName());
-        assertEquals("url",SUT.getUrl());
-        assertEquals("thumbnail",SUT.getThumbnail());
-        assertEquals(10,SUT.getHeight());
-        assertEquals(20,SUT.getWidth());
-        assertEquals(30,SUT.getSize());
-        assertEquals("filePath",SUT.getFilePath());
-        assertEquals(tags,SUT.getTags());
-        assertEquals(true,SUT.isPrivateFile());
-        assertEquals("0,0,10,20",SUT.getCustomCoordinates());
-        assertEquals("image",SUT.getFileType());
+        assertEquals("fileId", SUT.getFileId());
+        assertEquals("name", SUT.getName());
+        assertEquals("url", SUT.getUrl());
+        assertEquals("thumbnail", SUT.getThumbnail());
+        assertEquals(10, SUT.getHeight());
+        assertEquals(20, SUT.getWidth());
+        assertEquals(30, SUT.getSize());
+        assertEquals("filePath", SUT.getFilePath());
+        assertEquals(tags, SUT.getTags());
+        assertEquals(true, SUT.isPrivateFile());
+        assertEquals("0,0,10,20", SUT.getCustomCoordinates());
+        assertEquals("image", SUT.getFileType());
     }
 }

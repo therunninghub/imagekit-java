@@ -1,11 +1,7 @@
 package io.imagekit.sdk.models;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import io.imagekit.sdk.utils.Utils;
 import io.imagekit.sdk.utils.UtilsTest;
-import okhttp3.MultipartBody;
 import org.junit.Test;
 
 import java.io.File;
@@ -13,44 +9,45 @@ import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 public class FileCreateRequestTest {
     @Test
-    public void fileFromURL_constructor_test() throws Exception{
-        URL url= URI.create("https://sample-videos.com/img/Sample-jpg-image-50kb.jpg").toURL();
-        FileCreateRequest SUT=new FileCreateRequest(url,"file_name");
+    public void fileFromURL_constructor_test() throws Exception {
+        URL url = URI.create("https://sample-videos.com/img/Sample-jpg-image-50kb.jpg").toURL();
+        FileCreateRequest SUT = new FileCreateRequest(url, "file_name");
         assertNotNull(SUT);
     }
 
     @Test
     public void base64_constructor_test() {
         URL imageURL = UtilsTest.class.getClassLoader().getResource("sample1.jpg");
-        File file=new File(imageURL.getPath());
+        File file = new File(imageURL.getPath());
         String base64 = Utils.fileToBase64(file);
-        FileCreateRequest SUT=new FileCreateRequest(base64,"file_name");
+        FileCreateRequest SUT = new FileCreateRequest(base64, "file_name");
         assertNotNull(SUT);
     }
 
     @Test
     public void bytes_constructor_test() {
         URL imageURL = UtilsTest.class.getClassLoader().getResource("sample1.jpg");
-        File file=new File(imageURL.getPath());
+        File file = new File(imageURL.getPath());
         byte[] bytes = Utils.fileToBytes(file);
-        FileCreateRequest SUT=new FileCreateRequest(bytes,"file_name");
+        FileCreateRequest SUT = new FileCreateRequest(bytes, "file_name");
         assertNotNull(SUT);
     }
 
     @Test
     public void test_getter_setter() {
         URL imageURL = UtilsTest.class.getClassLoader().getResource("sample1.jpg");
-        File file=new File(imageURL.getPath());
+        File file = new File(imageURL.getPath());
         String base64 = Utils.fileToBase64(file);
-        FileCreateRequest SUT=new FileCreateRequest(base64,"file_name");
+        FileCreateRequest SUT = new FileCreateRequest(base64, "file_name");
 
-        List<String> tags=mock(List.class);
-        List<String> responseFields=mock(List.class);
+        List<String> tags = mock(List.class);
+        List<String> responseFields = mock(List.class);
 
         SUT.setCustomCoordinates("0,0,10,20");
         SUT.setFileName("file_name");
@@ -60,13 +57,13 @@ public class FileCreateRequestTest {
         SUT.setTags(tags);
         SUT.setUseUniqueFileName(true);
 
-        assertEquals("0,0,10,20",SUT.getCustomCoordinates());
-        assertEquals("file_name",SUT.getFileName());
-        assertEquals("dir1",SUT.getFolder());
-        assertEquals(true,SUT.isPrivateFile());
-        assertEquals(responseFields,SUT.getResponseFields());
-        assertEquals(tags,SUT.getTags());
-        assertEquals(true,SUT.isUseUniqueFileName());
+        assertEquals("0,0,10,20", SUT.getCustomCoordinates());
+        assertEquals("file_name", SUT.getFileName());
+        assertEquals("dir1", SUT.getFolder());
+        assertEquals(true, SUT.isPrivateFile());
+        assertEquals(responseFields, SUT.getResponseFields());
+        assertEquals(tags, SUT.getTags());
+        assertEquals(true, SUT.isUseUniqueFileName());
 
     }
 //

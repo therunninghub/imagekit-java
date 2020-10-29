@@ -141,9 +141,9 @@ public class BaseFile {
                 ", width=" + width +
                 ", size=" + size +
                 ", filePath='" + filePath + '\'' +
-                ", tags='" + tags +'\''+
+                ", tags='" + tags + '\'' +
                 ", isPrivateFile=" + isPrivateFile +
-                ", customCoordinates='" + customCoordinates +'\''+
+                ", customCoordinates='" + customCoordinates + '\'' +
                 ", fileType='" + fileType + '\'' +
                 '}';
     }

@@ -1,7 +1,6 @@
 package io.imagekit.sdk.models.results;
 
 import com.google.gson.Gson;
-import com.google.gson.internal.$Gson$Preconditions;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -18,8 +17,8 @@ public class ResultFileDelete {
     private List<String> missingFileIds;
 
     public ResultFileDelete() {
-        successfullyDeletedFileIds=new ArrayList<>();
-        missingFileIds=new ArrayList<>();
+        successfullyDeletedFileIds = new ArrayList<>();
+        missingFileIds = new ArrayList<>();
     }
 
     public boolean isSuccessful() {
@@ -45,6 +44,7 @@ public class ResultFileDelete {
     public void setHelp(String help) {
         this.help = help;
     }
+
     public String getRaw() {
         return raw;
     }
@@ -53,8 +53,8 @@ public class ResultFileDelete {
         this.raw = raw;
     }
 
-    public Map<String,Object> getMap(){
-        if (null!=raw) {
+    public Map<String, Object> getMap() {
+        if (null != raw) {
             return new Gson().fromJson(raw, new TypeToken<Map<String, Object>>() {
             }.getType());
         }

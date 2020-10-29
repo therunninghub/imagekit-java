@@ -1,10 +1,5 @@
 package io.imagekit.sdk.models;
 
-import io.imagekit.sdk.utils.Utils;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-
 import java.net.URL;
 import java.util.List;
 
@@ -23,19 +18,19 @@ public class FileCreateRequest {
     public FileCreateRequest(URL url, String fileName) {
         this.url = url;
         this.fileName = fileName;
-        this.useUniqueFileName=true;
+        this.useUniqueFileName = true;
     }
 
     public FileCreateRequest(String base64, String fileName) {
         this.base64 = base64;
         this.fileName = fileName;
-        this.useUniqueFileName=true;
+        this.useUniqueFileName = true;
     }
 
     public FileCreateRequest(byte[] bytes, String fileName) {
         this.bytes = bytes;
         this.fileName = fileName;
-        this.useUniqueFileName=true;
+        this.useUniqueFileName = true;
     }
 
     public String getFileName() {
